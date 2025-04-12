@@ -1,5 +1,5 @@
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_LINE_WIDTH, COLOR_WHITE
+from constants import PLAYER_RADIUS, PLAYER_POLYGON_LINE_WIDTH, COLOR_WHITE
 from circleshape import CircleShape
 
 
@@ -18,5 +18,6 @@ class Player(CircleShape):
         c = self.position - forward * self.radius + right
         return [a, b, c]
     
+    # overides func draw(self, screen) in CircleShape class
     def draw(self, screen):
-        pygame.draw.polygon(screen, COLOR_WHITE, self.triangle(), PLAYER_LINE_WIDTH)
+        pygame.draw.polygon(screen, COLOR_WHITE, self.triangle(), PLAYER_POLYGON_LINE_WIDTH)

@@ -1,5 +1,6 @@
 import pygame
 from player import Player
+from constants import COLOR_BLACK
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_FPS
 from constants import ASTEROID_MIN_RADIUS, ASTEROID_KINDS, ASTEROID_SPAWN_RATE, ASTEROID_MAX_RADIUS
 
@@ -10,7 +11,7 @@ def main():
     
     #setting up initalization for the game and game window
     pygame.init()
-    player_sprite = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    player_sprite = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) #set player sprite cords(x, y) to middle of screen
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     dt = 0
@@ -22,9 +23,9 @@ def main():
             if event.type == pygame.QUIT:
                 return
             
-        screen.fill("black")
+        screen.fill(COLOR_BLACK)
         player_sprite.draw(screen)
-        pygame.display.flip()
+        pygame.display.flip() #refreshes the screen | flip to next frame
 
         # pause game for 1/60th of a second and get the delta return time of .tick() / 1000 to get
         # seconds from the returning milliseconds value
