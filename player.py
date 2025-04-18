@@ -11,8 +11,8 @@ class Player(CircleShape):
       
    # in the player class
    def triangle(self):
-      forward = pygame.Vector2(0, 1).rotate(self.rotation)
-      right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.5
+      forward = pygame.Vector2(0, -1).rotate(self.rotation)  # Changed from 1 to -1
+      right = pygame.Vector2(0, -1).rotate(self.rotation + 90) * self.radius / 1.5  # Changed from 1 to -1
       a = self.position + forward * self.radius
       b = self.position - forward * self.radius - right
       c = self.position - forward * self.radius + right
@@ -26,8 +26,8 @@ class Player(CircleShape):
       self.rotation += (PLAYER_TURN_SPEED * dt)
    
    def move(self, dt):
-      # Create a unit vector pointing up (0, 1)
-      forwardVec = pygame.Vector2(0, 1)  # Note: -1 because pygame's Y axis is inverted
+      # Create a unit vector pointing up (0, -1)
+      forwardVec = pygame.Vector2(0, -1)  # Changed from 1 to -1
       # Rotate the vector by player's rotation
       direction = forwardVec.rotate(self.rotation)
       # Scale the vector by speed and time
@@ -41,12 +41,15 @@ class Player(CircleShape):
       if keys[pygame.K_w]: #Forward Movement
          self.move(dt)
             
-      if keys[pygame.K_a]: #Left Rotation
-         self.rotate(-dt) 
+      if keys[pygame.K_a] and keys[pygame.K_s]: #Left Rotation & backwards moving
+         self.rotate(dt)
+      elif keys[pygame.K_a]: #Left Rotation and/or Forward Movement & Left Rotation
+         self.rotate(-dt)
  
       if keys[pygame.K_s]: #Backwards Movement
          self.move(-dt)
          
-      if keys[pygame.K_d]: #Right Rotation
+      if keys[pygame.K_d] and keys[pygame.K_s]: #Right Rotation & backwards moving
+         self.rotate(-dt)
+      elif keys[pygame.K_d]: #Right Rotation and/or Forward Movement & Right Rotation
          self.rotate(dt)
-         
