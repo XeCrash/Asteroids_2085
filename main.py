@@ -17,7 +17,7 @@ def main():
    dt = 0
     
     
-    # ♾️ While - The Game Loop
+   # ♾️ While - The Game Loop
    while True:
       for event in pygame.event.get():
          if event.type == pygame.QUIT:
@@ -25,7 +25,7 @@ def main():
             
       screen.fill(COLOR_BLACK)
       player_sprite.draw(screen)
-      player_sprite.update(dt)
+      player_sprite.update(dt) #Updates the rotation of player sprite
       pygame.display.flip() #refreshes the screen | flip to next frame | Renders Screen which is the Game Loop's State
 
       # pause game for 1/60th of a second and get the delta return time of .tick() / 1000 to get

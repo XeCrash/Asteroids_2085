@@ -1,5 +1,5 @@
 import pygame
-from constants import PLAYER_RADIUS, PLAYER_POLYGON_LINE_WIDTH, PLAYER_TURN_SPEED, COLOR_WHITE
+from constants import PLAYER_RADIUS, PLAYER_POLYGON_LINE_WIDTH, PLAYER_TURN_SPEED, PLAYER_SPEED, COLOR_WHITE
 from circleshape import CircleShape
 
 
@@ -24,21 +24,29 @@ class Player(CircleShape):
    
    def rotate(self, dt):
       self.rotation += (PLAYER_TURN_SPEED * dt)
+   
+   def move(self, dt):
+      # Create a unit vector pointing up (0, 1)
+      forwardVec = pygame.Vector2(0, 1)  # Note: -1 because pygame's Y axis is inverted
+      # Rotate the vector by player's rotation
+      direction = forwardVec.rotate(self.rotation)
+      # Scale the vector by speed and time
+      movement = direction * PLAYER_SPEED * dt
+      # Update position
+      self.position += movement
 
    def update(self, dt):
       keys = pygame.key.get_pressed()
 
-      if keys[pygame.K_w]: #Forward
-         #self.rotate(dt)
-         pass
+      if keys[pygame.K_w]: #Forward Movement
+         self.move(dt)
             
-      if keys[pygame.K_a]: #Left
+      if keys[pygame.K_a]: #Left Rotation
          self.rotate(-dt) 
  
-      if keys[pygame.K_s]: #Backwards
-         #self.rotate(dt)
-         pass
+      if keys[pygame.K_s]: #Backwards Movement
+         self.move(-dt)
          
-      if keys[pygame.K_d]: #right
+      if keys[pygame.K_d]: #Right Rotation
          self.rotate(dt)
          
