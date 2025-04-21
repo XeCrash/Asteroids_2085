@@ -1,6 +1,7 @@
 import sys
 import pygame
 from math import pi
+from datetime import datetime
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
@@ -11,10 +12,11 @@ from constants import ASTEROID_MIN_RADIUS, ASTEROID_X_AXIS_MIN_VELOCITY_RIGHT
 
 def main():
    # Add file logging setup at the start of main()
-   log_file = open("GameEvents.log", "w")
-   print("Starting Asteroids!")
-   print(f"Screen width: {SCREEN_WIDTH}")
-   print(f"Screen height: {SCREEN_HEIGHT}")
+   log_file = open("GameEvents.logs", "w")
+   current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+   print(f"[{current_time}] Starting Asteroids!")
+   print(f"[{current_time}] Screen width: {SCREEN_WIDTH}")
+   print(f"[{current_time}] Screen height: {SCREEN_HEIGHT}")
    print() # Newline
    
    # Setting up initalization for the game and game window
@@ -23,8 +25,9 @@ def main():
    updatable_group = pygame.sprite.Group()
    drawable_group = pygame.sprite.Group()
    asteroids_group = pygame.sprite.Group()
+   shot_group = pygame.sprite.Group()
    Player.containers = (updatable_group, drawable_group)
-   Shot.containers = (updatable_group, drawable_group)
+   Shot.containers = (updatable_group, drawable_group, shot_group)
    Asteroid.containers = (asteroids_group, updatable_group, drawable_group)
    AsteroidField.containers = (updatable_group) # updates POS only and its also not an asteroid itself so we only put in updatable group
    
@@ -42,13 +45,13 @@ def main():
    dt = 0
    
    for thing in updatable_group:
-      print(f"Updatable Group: {thing}")
+            print(f"Updatable Group: {thing}")
    print() # Newline
    for thing in drawable_group:
-      print(f"Drawable Group: {thing}")
+            print(f"Drawable Group: {thing}")
    print() # Newline      
    for thing in asteroids_group:
-      print(f"Asteroid Group: {thing}")
+            print(f"Asteroid Group: {thing}")
    print() # Newline
    
    # ♾️ While - The Game Loop
@@ -69,17 +72,25 @@ def main():
       # Player collison with asteroids detection
       for asteroid in asteroids_group:
          if player_obj.colliding_with(asteroid):
-            #counter += 1
-            #print(f"Collision Detected #{counter}")
-            print("Game Over!")
-            print("Handeled Event: <CustomEvent(001-CollisionDetected {'event_desc': 'Player Collision With Asteroid Detected!'})>", file=log_file)
+            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            print(f"[{current_time}] Game Over!")
+            print(f"[{current_time}] Handeled Event: <CustomEvent(001-CollisionDetected ['event_desc': 'Player Collision With Asteroid Detected!'])>", file=log_file)
             log_file.close()
             sys.exit(0)
-      
+            
+         # Check collisions between shots and this asteroid
+         for shot in shot_group:
+            if shot.colliding_with(asteroid):
+               current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+               print(f"[{current_time}] Handeled Event: <CustomEvent(002-CollisionDetected ['event_desc': 'Player Fired Bullet Collided With An Asteroid Enemy!'])>", file=log_file)
+               shot.kill()
+               asteroid.split(dt)
+               break  # Break since this asteroid is now destroyed
+
       # If game exit event is triggered.
       if done == True:
-         # do something before exiting the game and gameloop like saving stats or score, just ideas
-         print("User exited the game!", file=log_file)
+         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+         print(f"[{current_time}] User exited the game!", file=log_file)
          log_file.close()
          return
       
