@@ -61,6 +61,9 @@ class CircleShape(pygame.sprite.Sprite):
           
       Returns:
           bool: True if objects are colliding, False otherwise
+          
+      Note:
+          This method uses the distance formula to check for collision.
       """
       distance = pygame.Vector2.distance_to(self.position, other.position)
       # Get the radii of both circles

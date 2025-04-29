@@ -2,6 +2,7 @@ import sys
 import pygame
 from math import pi
 from datetime import datetime
+import logging
 from MenuUtils.menu import Menu
 from Sprites.player import Player
 from Sprites.asteroid import Asteroid
@@ -11,7 +12,10 @@ from CONSTS.COLORS import COLOR_BLACK
 from CONSTS.SCREEN import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_FPS, SCREEN_CAPTION, SCREEN_FLAGS
 from CONSTS.ASTEROIDS import ASTEROID_MIN_RADIUS, ASTEROID_X_AXIS_MIN_VELOCITY_RIGHT
 
-def game_loop(screen, clock, menu, game_state, log_file):
+#logging.disable()
+logging.basicConfig(filename='internal_debug.logs', level=logging.INFO, format='[%(asctime)s] <-> [%(levelname)s] <-> [\'%(message)s\']')
+
+def game_loop(screen, clock, menu, game_state, log_file, log_once = True):
     """Main game loop. Handling menu navigation, gameplay, and state transitions.
     
     Args:
@@ -24,24 +28,37 @@ def game_loop(screen, clock, menu, game_state, log_file):
     Returns:
         None
     """
+    logging.info("game_loop() method started.")
+    dt = 0
     # Initialize sprite groups
+    logging.info("Initializing sprite groups...")
     updatable_group = pygame.sprite.Group()
     drawable_group = pygame.sprite.Group()
     asteroids_group = pygame.sprite.Group()
     shot_group = pygame.sprite.Group()
+    logging.info("Sprite groups initialized.")
     
     # Set container groups for game objects
+    logging.info("Setting container groups for game objects...")
     Player.containers = updatable_group, drawable_group
     Shot.containers = updatable_group, drawable_group, shot_group
     Asteroid.containers = asteroids_group, updatable_group, drawable_group
     AsteroidField.containers = updatable_group
+    logging.info("Container groups set.")
     
     # Initialize game objects as None
+    logging.info("Initializing game objects...")
     player_obj = None
     asteroid_field = None
+    logging.info("Game objects initialized.")
     
     while True:
+        if log_once is True:
+            logging.info("Entering ♾️ game loop...")
+            
         if game_state == "menu":
+            if log_once is True:
+                logging.info("Entering menu loop...")
             screen.fill(COLOR_BLACK)
             menu.draw(screen)
             action = menu.handle_input()
@@ -138,9 +155,12 @@ def game_loop(screen, clock, menu, game_state, log_file):
                      shot.kill()
                      asteroid.split(dt)
                      break  # Break inner loop since this shot hit an asteroid
-
         pygame.display.flip()
         dt = clock.tick(SCREEN_FPS) / 1000
+        if log_once is True:
+            logging.info("Screen updated!")
+        log_once = False # Set to False to prevent logging this information again
+        
 
 def main():
     """Initialize and start the Asteroids game.
@@ -150,6 +170,7 @@ def main():
     Returns:
         None
     """
+    logging.info("main() method started.")
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_FLAGS)
     clock = pygame.time.Clock()
@@ -160,11 +181,16 @@ def main():
     game_state = "menu"
     
     # Add file logging setup
-    log_file = open("GameEvents.logs", "w")
+    log_file = open("GameEvent.logs", "w")
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{current_time}] Starting Asteroids!")
     
+    logging.info("main() method finished!")
     game_loop(screen, clock, menu, game_state, log_file)
 
 if __name__ == "__main__":
+    """Entry point for the game.
+
+    Initializes the game and starts the main loop.
+    """
     main()

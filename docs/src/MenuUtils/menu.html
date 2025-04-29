@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>src.MenuUtils.menu API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>src.MenuUtils.menu</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.MenuUtils.menu.Menu"><code class="flex name class">
+<span>class <span class="ident">Menu</span></span>
+<span>(</span><span>screen)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Menu:
+    def __init__(self, screen):
+        &#34;&#34;&#34;Initialize the menu system with display settings and audio.
+        
+        Args:
+            screen: pygame.Surface - The main game display surface
+            
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.screen = screen
+        self.font_large = pygame.font.Font(None, MENU_TITLE_FONT_SIZE)
+        self.font_small = pygame.font.Font(None, MENU_OPTION_FONT_SIZE)
+        self.selected_option = 0
+        self.options = MENU_STATES_LIST
+        self.transition_alpha = 255  # For fade effect
+        self.transitioning = False
+        self.title_animation_time = 0
+        self.title_fade_alpha = 0  # For title fade-in effect
+        
+        # Initialize music
+        pygame.mixer.init()
+        self.menu_music = None
+        self.game_music = None
+        
+        # Load music if files exist
+        menu_music_path = os.path.join(os.path.dirname(__file__), &#39;../&#39;, &#39;Assets&#39;, &#39;Audio&#39;, &#39;menu_music.mp3&#39;)
+        game_music_path = os.path.join(os.path.dirname(__file__), &#39;../&#39;, &#39;Assets&#39;, &#39;Audio&#39;, &#39;game_music.mp3&#39;)
+        
+        if os.path.exists(menu_music_path):
+            self.menu_music = pygame.mixer.Sound(menu_music_path)
+            self.menu_music.set_volume(MENU_MUSIC_VOLUME)
+            self.menu_music.play(-1)  # Loop indefinitely
+        else:
+            print(f&#34;Menu music file not found at {menu_music_path}&#34;)
+        
+        if os.path.exists(game_music_path):
+            self.game_music = pygame.mixer.Sound(game_music_path)
+        else:
+            print(f&#34;Game music file not found at {game_music_path}&#34;)
+
+    def draw(self, screen):
+        &#34;&#34;&#34;Renders the menu interface with animated title and options.
+        
+        Args:
+            screen: pygame.Surface - The surface to draw the menu on
+            
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.screen.fill(COLOR_BLACK)
+        
+        # Update title animation time
+        self.title_animation_time += 0.05
+        if self.title_animation_time &gt; 2 * math.pi:
+            self.title_animation_time -= 2 * math.pi
+        
+        # Update title fade-in effect
+        if self.title_fade_alpha &lt; 255:
+            self.title_fade_alpha += MENU_TITLE_FADE_SPEED  # Gradually increase opacity
+            
+        
+        # Draw animated title with unique design
+        title_text = MENU_TITLE_TEXT
+        title_center_x = SCREEN_WIDTH/2
+        title_center_y = SCREEN_HEIGHT/4
+        
+        # Create a unique, animated title
+        # First calculate the total width more accurately
+        total_width = 0
+        char_surfaces = []
+        char_widths = []
+        char_color = [255, 255, 0]  # Initial color
+        
+        for char in title_text:
+            char_surface = self.font_large.render(char, True, (255, 255, 255))  # Temporary for width calculation
+            char_width = char_surface.get_width()
+            char_widths.append(char_width)
+            total_width += char_width
+        
+        # Add a small gap between characters (10% of average character width)
+        char_gap = sum(char_widths) / len(char_widths) * 0.1
+        total_width += char_gap * (len(title_text) - 1)
+        
+        # Now render and position each character
+        current_x = title_center_x - total_width/2
+        
+        for i, char in enumerate(title_text):
+            # Calculate position with wave effect
+            offset_y = math.sin(self.title_animation_time + i * 0.3) * 10
+            
+            # Color gradient
+            char_color_r, char_color_g, char_color_b = (255, 255 - i * 15, i * 25)
+            char_color = (char_color_r, char_color_g, char_color_b)
+            # Render each character separately
+            if char_color_b &lt;= 255: 
+                # While blue is not maxed out
+                #print(char_color) # TODO: Remove (Debugging)
+                char_surface = self.font_large.render(char, True, char_color)
+            else: 
+                # Once blue is maxed out
+                char_surface = self.font_large.render(char, True, (char_color_r, char_color_g, 255))  # White for the last few characters
+            
+            # Position each character
+            pos_x = current_x
+            pos_y = title_center_y + offset_y
+            
+            # Add shadow effect
+            shadow = self.font_large.render(char, True, (50, 50, 50))
+            
+            # Apply fade-in effect to both character and shadow
+            char_surface.set_alpha(self.title_fade_alpha)
+            shadow.set_alpha(self.title_fade_alpha)
+            
+            # Draw the shadow and character
+            screen.blit(shadow, (pos_x + 3, pos_y + 3))
+            screen.blit(char_surface, (pos_x, pos_y))
+            
+            # Move to the next character position
+            current_x += char_widths[i] + char_gap
+
+        # Draw menu options
+        for i, option in enumerate(self.options):
+            # Use blue color for menu text, but keep selection indicators white
+            if i == self.selected_option:
+                # Render the option text in blue
+                option_text = self.font_small.render(option, True, MENU_OPTION_SELECTED_COLOR) # TODO: add CONST MENU_OPTION_COLOR
+                
+                # Calculate positions for the text
+                option_rect = option_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + i * MENU_OPTION_SPACING))
+                
+                # Render the left and right arrows separately in white
+                left_arrow = self.font_small.render(&#39;&gt;&#39;, True, MENU_OPTION_ARROW_COLOR)
+                right_arrow = self.font_small.render(&#39;&lt;&#39;, True, MENU_OPTION_ARROW_COLOR)
+                
+                # Position arrows with proper spacing based on text width
+                left_arrow_pos = (option_rect.left - left_arrow.get_width() - 5, option_rect.top)
+                right_arrow_pos = (option_rect.right + 5, option_rect.top)
+                
+                # Draw text and arrows separately
+                screen.blit(option_text, option_rect)
+                screen.blit(left_arrow, left_arrow_pos)
+                screen.blit(right_arrow, right_arrow_pos)
+            else:
+                # Non-selected options are just red
+                text = self.font_small.render(option, True, MENU_OPTION_COLOR)
+                rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + i * 50))
+                screen.blit(text, rect)
+
+        # Draw transition overlay if needed
+        if self.transitioning:
+            transition_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+            transition_surface.fill(COLOR_BLACK)
+            transition_surface.set_alpha(self.transition_alpha)
+            screen.blit(transition_surface, (0, 0))
+
+    def handle_input(self):
+        &#34;&#34;&#34;Processes keyboard input for menu navigation and selection.
+        
+        Returns:
+            str: Selected menu option or None if no selection made
+        &#34;&#34;&#34;
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return &#39;quit&#39;
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.selected_option = (self.selected_option - 1) % len(self.options)
+                elif event.key == pygame.K_DOWN:
+                    self.selected_option = (self.selected_option + 1) % len(self.options)
+                elif event.key == pygame.K_RETURN:
+                    self.transitioning = True
+                    return self.options[self.selected_option].lower()
+            else:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_LSHIFT] and keys[pygame.K_w]:
+                    self.selected_option = (self.selected_option - 1) % len(self.options)
+                if keys[pygame.K_LSHIFT] and keys[pygame.K_s]:
+                    self.selected_option = (self.selected_option + 1) % len(self.options)
+                if keys[pygame.K_LSHIFT] and keys[pygame.K_e]:
+                    self.transitioning = True
+                    return self.options[self.selected_option].lower()
+        return None
+
+    def update_transition(self):
+        &#34;&#34;&#34;Updates the transition effect between menu and game states.
+        
+        Returns:
+            bool: True if transition is complete, False otherwise
+        &#34;&#34;&#34;
+        if self.transitioning:
+            self.transition_alpha += MENU_TRANSITION_SPEED
+            if self.transition_alpha &gt;= 255:
+                # Stop menu music and start game music when transitioning to game
+                if self.menu_music:
+                    self.menu_music.stop()
+                if self.game_music:
+                    self.game_music.play(-1)
+                return True
+        return False
+        
+    def return_to_menu(self):
+        &#34;&#34;&#34;Handles the transition from game state back to menu state.
+        
+        Returns:
+            None
+        &#34;&#34;&#34;
+        # Stop game music and restart menu music
+        if self.game_music:
+            self.game_music.stop()
+        if self.menu_music:
+            self.menu_music.play(-1)</code></pre>
+</details>
+<div class="desc"><p>Initialize the menu system with display settings and audio.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>screen</code></strong></dt>
+<dd>pygame.Surface - The main game display surface</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+<h3>Methods</h3>
+<dl>
+<dt id="src.MenuUtils.menu.Menu.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>self, screen)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def draw(self, screen):
+    &#34;&#34;&#34;Renders the menu interface with animated title and options.
+    
+    Args:
+        screen: pygame.Surface - The surface to draw the menu on
+        
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.screen.fill(COLOR_BLACK)
+    
+    # Update title animation time
+    self.title_animation_time += 0.05
+    if self.title_animation_time &gt; 2 * math.pi:
+        self.title_animation_time -= 2 * math.pi
+    
+    # Update title fade-in effect
+    if self.title_fade_alpha &lt; 255:
+        self.title_fade_alpha += MENU_TITLE_FADE_SPEED  # Gradually increase opacity
+        
+    
+    # Draw animated title with unique design
+    title_text = MENU_TITLE_TEXT
+    title_center_x = SCREEN_WIDTH/2
+    title_center_y = SCREEN_HEIGHT/4
+    
+    # Create a unique, animated title
+    # First calculate the total width more accurately
+    total_width = 0
+    char_surfaces = []
+    char_widths = []
+    char_color = [255, 255, 0]  # Initial color
+    
+    for char in title_text:
+        char_surface = self.font_large.render(char, True, (255, 255, 255))  # Temporary for width calculation
+        char_width = char_surface.get_width()
+        char_widths.append(char_width)
+        total_width += char_width
+    
+    # Add a small gap between characters (10% of average character width)
+    char_gap = sum(char_widths) / len(char_widths) * 0.1
+    total_width += char_gap * (len(title_text) - 1)
+    
+    # Now render and position each character
+    current_x = title_center_x - total_width/2
+    
+    for i, char in enumerate(title_text):
+        # Calculate position with wave effect
+        offset_y = math.sin(self.title_animation_time + i * 0.3) * 10
+        
+        # Color gradient
+        char_color_r, char_color_g, char_color_b = (255, 255 - i * 15, i * 25)
+        char_color = (char_color_r, char_color_g, char_color_b)
+        # Render each character separately
+        if char_color_b &lt;= 255: 
+            # While blue is not maxed out
+            #print(char_color) # TODO: Remove (Debugging)
+            char_surface = self.font_large.render(char, True, char_color)
+        else: 
+            # Once blue is maxed out
+            char_surface = self.font_large.render(char, True, (char_color_r, char_color_g, 255))  # White for the last few characters
+        
+        # Position each character
+        pos_x = current_x
+        pos_y = title_center_y + offset_y
+        
+        # Add shadow effect
+        shadow = self.font_large.render(char, True, (50, 50, 50))
+        
+        # Apply fade-in effect to both character and shadow
+        char_surface.set_alpha(self.title_fade_alpha)
+        shadow.set_alpha(self.title_fade_alpha)
+        
+        # Draw the shadow and character
+        screen.blit(shadow, (pos_x + 3, pos_y + 3))
+        screen.blit(char_surface, (pos_x, pos_y))
+        
+        # Move to the next character position
+        current_x += char_widths[i] + char_gap
+
+    # Draw menu options
+    for i, option in enumerate(self.options):
+        # Use blue color for menu text, but keep selection indicators white
+        if i == self.selected_option:
+            # Render the option text in blue
+            option_text = self.font_small.render(option, True, MENU_OPTION_SELECTED_COLOR) # TODO: add CONST MENU_OPTION_COLOR
+            
+            # Calculate positions for the text
+            option_rect = option_text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + i * MENU_OPTION_SPACING))
+            
+            # Render the left and right arrows separately in white
+            left_arrow = self.font_small.render(&#39;&gt;&#39;, True, MENU_OPTION_ARROW_COLOR)
+            right_arrow = self.font_small.render(&#39;&lt;&#39;, True, MENU_OPTION_ARROW_COLOR)
+            
+            # Position arrows with proper spacing based on text width
+            left_arrow_pos = (option_rect.left - left_arrow.get_width() - 5, option_rect.top)
+            right_arrow_pos = (option_rect.right + 5, option_rect.top)
+            
+            # Draw text and arrows separately
+            screen.blit(option_text, option_rect)
+            screen.blit(left_arrow, left_arrow_pos)
+            screen.blit(right_arrow, right_arrow_pos)
+        else:
+            # Non-selected options are just red
+            text = self.font_small.render(option, True, MENU_OPTION_COLOR)
+            rect = text.get_rect(center=(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + i * 50))
+            screen.blit(text, rect)
+
+    # Draw transition overlay if needed
+    if self.transitioning:
+        transition_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        transition_surface.fill(COLOR_BLACK)
+        transition_surface.set_alpha(self.transition_alpha)
+        screen.blit(transition_surface, (0, 0))</code></pre>
+</details>
+<div class="desc"><p>Renders the menu interface with animated title and options.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>screen</code></strong></dt>
+<dd>pygame.Surface - The surface to draw the menu on</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="src.MenuUtils.menu.Menu.handle_input"><code class="name flex">
+<span>def <span class="ident">handle_input</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_input(self):
+    &#34;&#34;&#34;Processes keyboard input for menu navigation and selection.
+    
+    Returns:
+        str: Selected menu option or None if no selection made
+    &#34;&#34;&#34;
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return &#39;quit&#39;
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                self.selected_option = (self.selected_option - 1) % len(self.options)
+            elif event.key == pygame.K_DOWN:
+                self.selected_option = (self.selected_option + 1) % len(self.options)
+            elif event.key == pygame.K_RETURN:
+                self.transitioning = True
+                return self.options[self.selected_option].lower()
+        else:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_w]:
+                self.selected_option = (self.selected_option - 1) % len(self.options)
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_s]:
+                self.selected_option = (self.selected_option + 1) % len(self.options)
+            if keys[pygame.K_LSHIFT] and keys[pygame.K_e]:
+                self.transitioning = True
+                return self.options[self.selected_option].lower()
+    return None</code></pre>
+</details>
+<div class="desc"><p>Processes keyboard input for menu navigation and selection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Selected menu option or None if no selection made</dd>
+</dl></div>
+</dd>
+<dt id="src.MenuUtils.menu.Menu.return_to_menu"><code class="name flex">
+<span>def <span class="ident">return_to_menu</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def return_to_menu(self):
+    &#34;&#34;&#34;Handles the transition from game state back to menu state.
+    
+    Returns:
+        None
+    &#34;&#34;&#34;
+    # Stop game music and restart menu music
+    if self.game_music:
+        self.game_music.stop()
+    if self.menu_music:
+        self.menu_music.play(-1)</code></pre>
+</details>
+<div class="desc"><p>Handles the transition from game state back to menu state.</p>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="src.MenuUtils.menu.Menu.update_transition"><code class="name flex">
+<span>def <span class="ident">update_transition</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_transition(self):
+    &#34;&#34;&#34;Updates the transition effect between menu and game states.
+    
+    Returns:
+        bool: True if transition is complete, False otherwise
+    &#34;&#34;&#34;
+    if self.transitioning:
+        self.transition_alpha += MENU_TRANSITION_SPEED
+        if self.transition_alpha &gt;= 255:
+            # Stop menu music and start game music when transitioning to game
+            if self.menu_music:
+                self.menu_music.stop()
+            if self.game_music:
+                self.game_music.play(-1)
+            return True
+    return False</code></pre>
+</details>
+<div class="desc"><p>Updates the transition effect between menu and game states.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if transition is complete, False otherwise</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="src.MenuUtils" href="index.html">src.MenuUtils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.MenuUtils.menu.Menu" href="#src.MenuUtils.menu.Menu">Menu</a></code></h4>
+<ul class="">
+<li><code><a title="src.MenuUtils.menu.Menu.draw" href="#src.MenuUtils.menu.Menu.draw">draw</a></code></li>
+<li><code><a title="src.MenuUtils.menu.Menu.handle_input" href="#src.MenuUtils.menu.Menu.handle_input">handle_input</a></code></li>
+<li><code><a title="src.MenuUtils.menu.Menu.return_to_menu" href="#src.MenuUtils.menu.Menu.return_to_menu">return_to_menu</a></code></li>
+<li><code><a title="src.MenuUtils.menu.Menu.update_transition" href="#src.MenuUtils.menu.Menu.update_transition">update_transition</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
