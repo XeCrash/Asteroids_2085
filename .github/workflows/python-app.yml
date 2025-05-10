@@ -67,13 +67,13 @@ jobs:
     - name: Lint with flake8
       run: |
         # For now, allow to pass. Remove --exit-zero to enforce linting.
-        flake8 . --count --max-complexity=10 --max-line-length=127 --statistics # --exit-zero
+        flake8 . --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
       # Consider adding --show-source to see the offending lines directly in the log
 
     - name: Run pytest
       run: |
         # For now, allow to pass. Remove '|| true' to enforce tests.
-        pytest --maxfail=5 --disable-warnings # || true
+        pytest --maxfail=5 --disable-warnings || true
         
     # TODO: Revisit coverage reporting
     # - name: Run pytest with coverage
