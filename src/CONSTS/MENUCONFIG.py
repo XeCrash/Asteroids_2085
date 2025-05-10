@@ -1,16 +1,17 @@
-"""Constants related to the main menu of the Asteroids 2085. 
+"""Constants related to the main menu of the Asteroids 2085.
 
 This module contains configuration values for the menu, including options,
 text, and animation settings.
 """
+
 # Imports
-from CONSTS.COLORS import *
+from CONSTS.COLORS import COLOR_RED, COLOR_YELLOW, COLOR_WHITE
 
 # List of available menu options shown to the player
-MENU_STATES_LIST = ['Start Game', 'Controls', 'Exit', 'Credits']
+MENU_STATES_LIST = ["Start Game", "Controls", "Exit", "Credits"]
 
 # Title text displayed at the top of the main menu
-MENU_TITLE_TEXT = 'ASTEROIDS 2085'
+MENU_TITLE_TEXT = "ASTEROIDS 2085"
 
 # Background music volume level (0.0 to 1.0)
 MENU_MUSIC_VOLUME = 0.1
@@ -19,10 +20,10 @@ MENU_MUSIC_VOLUME = 0.1
 MENU_TITLE_FADE_SPEED = 1.5
 
 # Font size for the menu title text in pixels
-MENU_TITLE_FONT_SIZE = 100
+MENU_TITLE_FONT_SIZE = 60
 
 # Font size for menu option text in pixels
-MENU_OPTION_FONT_SIZE = 50
+MENU_OPTION_FONT_SIZE = 30
 
 # Default color for unselected menu options
 MENU_OPTION_COLOR = COLOR_RED
@@ -34,16 +35,16 @@ MENU_OPTION_SELECTED_COLOR = COLOR_YELLOW
 MENU_OPTION_ARROW_COLOR = COLOR_WHITE
 
 # Vertical spacing between menu options in pixels (Critical for layout)
-MENU_OPTION_SPACING = 50 # DONT CHANGE THIS unless you know what you are doing
+MENU_OPTION_SPACING = 50  # DONT CHANGE THIS unless you know what you are doing
 
 # Size of the selection arrow indicator in pixels
-MENU_OPTION_ARROW_SIZE = 20 # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
+MENU_OPTION_ARROW_SIZE = 20  # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
 
 # Horizontal spacing between arrow and menu text in pixels
-MENU_OPTION_ARROW_SPACING = 30 # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
+MENU_OPTION_ARROW_SPACING = 30  # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
 
 # Horizontal offset of the arrow from menu edge in pixels
-MENU_OPTION_ARROW_OFFSET = 50 # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
+MENU_OPTION_ARROW_OFFSET = 50  # TODO: NOT IMPLEMENTED YET (NO REFERENCES... YET)
 
 # Speed of menu transition animations in alpha units per frame
 MENU_TRANSITION_SPEED = 2  # Alpha change per frame

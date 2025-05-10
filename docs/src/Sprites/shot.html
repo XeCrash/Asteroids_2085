@@ -56,50 +56,52 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Shot(CircleShape):
-   def __init__(self, x, y, radius):
-      &#34;&#34;&#34;Initialize a shot projectile.
-      
-      Args:
-          x: float - Initial x-coordinate position
-          y: float - Initial y-coordinate position
-          radius: float - Radius of the shot projectile
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      super().__init__(x, y, radius)
-      self.lifetime = 0.0  # Track how long the shot has existed
-      
-   def draw(self, screen):
-      &#34;&#34;&#34;Render the shot projectile on the screen.
-      
-      Args:
-          screen: pygame.Surface - The surface to draw the shot on
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      # Draw a solid yellow circle for the shot, circleshape makes collisions easier to detect
-      pygame.draw.circle(screen, COLOR_YELLOW, [self.position.x, self.position.y], self.radius)
-   
-   def update(self, dt):
-      &#34;&#34;&#34;Update the shot&#39;s position and lifetime.
-      
-      Removes the shot if it exceeds its lifetime duration. Updates position
-      based on velocity and time delta.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      self.lifetime += dt
-      if self.lifetime &gt;= SHOT_LIFETIME:
-         self.kill()
-         return
-      
-      self.position += (self.velocity * dt)</code></pre>
+    def __init__(self, x, y, radius):
+        &#34;&#34;&#34;Initialize a shot projectile.
+
+        Args:
+            x: float - Initial x-coordinate position
+            y: float - Initial y-coordinate position
+            radius: float - Radius of the shot projectile
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        super().__init__(x, y, radius)
+        self.lifetime = 0.0  # Track how long the shot has existed
+
+    def draw(self, screen):
+        &#34;&#34;&#34;Render the shot projectile on the screen.
+
+        Args:
+            screen: pygame.Surface - The surface to draw the shot on
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        # Draw a solid yellow circle for the shot, circleshape makes collisions easier to detect
+        pygame.draw.circle(
+            screen, COLOR_YELLOW, [self.position.x, self.position.y], self.radius
+        )
+
+    def update(self, dt):
+        &#34;&#34;&#34;Update the shot&#39;s position and lifetime.
+
+        Removes the shot if it exceeds its lifetime duration. Updates position
+        based on velocity and time delta.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.lifetime += dt
+        if self.lifetime &gt;= SHOT_LIFETIME:
+            self.kill()
+            return
+
+        self.position += self.velocity * dt</code></pre>
 </details>
 <div class="desc"><p>simple base class for visible game objects</p>
 <p>pygame.sprite.Sprite(*groups): return Sprite</p>
@@ -138,16 +140,18 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def draw(self, screen):
-   &#34;&#34;&#34;Render the shot projectile on the screen.
-   
-   Args:
-       screen: pygame.Surface - The surface to draw the shot on
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   # Draw a solid yellow circle for the shot, circleshape makes collisions easier to detect
-   pygame.draw.circle(screen, COLOR_YELLOW, [self.position.x, self.position.y], self.radius)</code></pre>
+    &#34;&#34;&#34;Render the shot projectile on the screen.
+
+    Args:
+        screen: pygame.Surface - The surface to draw the shot on
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    # Draw a solid yellow circle for the shot, circleshape makes collisions easier to detect
+    pygame.draw.circle(
+        screen, COLOR_YELLOW, [self.position.x, self.position.y], self.radius
+    )</code></pre>
 </details>
 <div class="desc"><p>Render the shot projectile on the screen.</p>
 <h2 id="args">Args</h2>
@@ -167,23 +171,23 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update(self, dt):
-   &#34;&#34;&#34;Update the shot&#39;s position and lifetime.
-   
-   Removes the shot if it exceeds its lifetime duration. Updates position
-   based on velocity and time delta.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   self.lifetime += dt
-   if self.lifetime &gt;= SHOT_LIFETIME:
-      self.kill()
-      return
-   
-   self.position += (self.velocity * dt)</code></pre>
+    &#34;&#34;&#34;Update the shot&#39;s position and lifetime.
+
+    Removes the shot if it exceeds its lifetime duration. Updates position
+    based on velocity and time delta.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.lifetime += dt
+    if self.lifetime &gt;= SHOT_LIFETIME:
+        self.kill()
+        return
+
+    self.position += self.velocity * dt</code></pre>
 </details>
 <div class="desc"><p>Update the shot's position and lifetime.</p>
 <p>Removes the shot if it exceeds its lifetime duration. Updates position

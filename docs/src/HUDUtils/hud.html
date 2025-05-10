@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>src.CONSTS.MENUCONFIG API documentation</title>
-<meta name="description" content="Constants related to the main menu of the Asteroids 2085 …">
+<title>src.HUDUtils.hud API documentation</title>
+<meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -33,12 +33,9 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>src.CONSTS.MENUCONFIG</code></h1>
+<h1 class="title">Module <code>src.HUDUtils.hud</code></h1>
 </header>
 <section id="section-intro">
-<p>Constants related to the main menu of the Asteroids 2085.</p>
-<p>This module contains configuration values for the menu, including options,
-text, and animation settings.</p>
 </section>
 <section>
 </section>
@@ -47,6 +44,140 @@ text, and animation settings.</p>
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="src.HUDUtils.hud.HUD"><code class="flex name class">
+<span>class <span class="ident">HUD</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HUD:
+    # Class variable for the font
+    font_default = None
+
+    @staticmethod
+    def init_font():
+        &#34;&#34;&#34;Initialize the font. Call this after pygame.init()&#34;&#34;&#34;
+        try:
+            HUD.font_default = pygame.font.Font(
+                FONT_DAYDREAM, 16
+            )  # Default Pygame font, size 36
+        except pygame.error:
+            print(&#34;Failed to load font. Trying 2nd path too game font.&#34;)
+            # If the font fails to load, use another path to load the font
+            HUD.font_default = pygame.font.Font(
+                FONT_DAYDREAM_PATH2, 16
+            )
+
+    @staticmethod
+    def draw(screen, kill_count: int):
+        &#34;&#34;&#34;Draw the HUD elements on the screen.
+
+        Args:
+            screen: pygame.Surface - The main display surface
+            kill_count: int - The current number of kills by the player
+        &#34;&#34;&#34;
+        # Create the kill count text surface
+        kill_text = HUD.font_default.render(&#34;Kills:&#34;, True, COLOR_YELLOW)
+        kill_txt_rect = kill_text.get_rect()
+        kill_num = HUD.font_default.render(f&#34;{kill_count}&#34;, True, COLOR_PURPLE)
+        kill_num_rect = kill_num.get_rect()
+
+        # Position the text in the top-left corner with some padding
+        kill_txt_rect.topleft = (10, 10)
+        # Position the text to the right of the kill count text
+        kill_num_rect.topleft = (
+            kill_txt_rect.topright[0] + 10,
+            kill_txt_rect.topright[1],
+        )
+
+        # Draw the text on the screen
+        screen.blit(kill_text, kill_txt_rect)
+        screen.blit(kill_num, kill_num_rect)</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="src.HUDUtils.hud.HUD.font_default"><code class="name">var <span class="ident">font_default</span></code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="src.HUDUtils.hud.HUD.draw"><code class="name flex">
+<span>def <span class="ident">draw</span></span>(<span>screen, kill_count: int)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def draw(screen, kill_count: int):
+    &#34;&#34;&#34;Draw the HUD elements on the screen.
+
+    Args:
+        screen: pygame.Surface - The main display surface
+        kill_count: int - The current number of kills by the player
+    &#34;&#34;&#34;
+    # Create the kill count text surface
+    kill_text = HUD.font_default.render(&#34;Kills:&#34;, True, COLOR_YELLOW)
+    kill_txt_rect = kill_text.get_rect()
+    kill_num = HUD.font_default.render(f&#34;{kill_count}&#34;, True, COLOR_PURPLE)
+    kill_num_rect = kill_num.get_rect()
+
+    # Position the text in the top-left corner with some padding
+    kill_txt_rect.topleft = (10, 10)
+    # Position the text to the right of the kill count text
+    kill_num_rect.topleft = (
+        kill_txt_rect.topright[0] + 10,
+        kill_txt_rect.topright[1],
+    )
+
+    # Draw the text on the screen
+    screen.blit(kill_text, kill_txt_rect)
+    screen.blit(kill_num, kill_num_rect)</code></pre>
+</details>
+<div class="desc"><p>Draw the HUD elements on the screen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>screen</code></strong></dt>
+<dd>pygame.Surface - The main display surface</dd>
+<dt><strong><code>kill_count</code></strong></dt>
+<dd>int - The current number of kills by the player</dd>
+</dl></div>
+</dd>
+<dt id="src.HUDUtils.hud.HUD.init_font"><code class="name flex">
+<span>def <span class="ident">init_font</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def init_font():
+    &#34;&#34;&#34;Initialize the font. Call this after pygame.init()&#34;&#34;&#34;
+    try:
+        HUD.font_default = pygame.font.Font(
+            FONT_DAYDREAM, 16
+        )  # Default Pygame font, size 36
+    except pygame.error:
+        print(&#34;Failed to load font. Trying 2nd path too game font.&#34;)
+        # If the font fails to load, use another path to load the font
+        HUD.font_default = pygame.font.Font(
+            FONT_DAYDREAM_PATH2, 16
+        )</code></pre>
+</details>
+<div class="desc"><p>Initialize the font. Call this after pygame.init()</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -56,7 +187,19 @@ text, and animation settings.</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="src.CONSTS" href="index.html">src.CONSTS</a></code></li>
+<li><code><a title="src.HUDUtils" href="index.html">src.HUDUtils</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="src.HUDUtils.hud.HUD" href="#src.HUDUtils.hud.HUD">HUD</a></code></h4>
+<ul class="">
+<li><code><a title="src.HUDUtils.hud.HUD.draw" href="#src.HUDUtils.hud.HUD.draw">draw</a></code></li>
+<li><code><a title="src.HUDUtils.hud.HUD.font_default" href="#src.HUDUtils.hud.HUD.font_default">font_default</a></code></li>
+<li><code><a title="src.HUDUtils.hud.HUD.init_font" href="#src.HUDUtils.hud.HUD.init_font">init_font</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

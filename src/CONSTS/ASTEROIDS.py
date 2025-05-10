@@ -1,4 +1,3 @@
-
 """Constants related to asteroid sprites and their behavior in the game.
 
     This module contains configuration values for asteroid sprites, including

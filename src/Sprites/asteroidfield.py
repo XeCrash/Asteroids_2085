@@ -1,8 +1,13 @@
 import pygame
 import random
 from Sprites.asteroid import Asteroid
-from CONSTS.ASTEROIDS import *
-from CONSTS.SCREEN import *
+from CONSTS.ASTEROIDS import (
+    ASTEROID_MAX_RADIUS,
+    ASTEROID_MIN_RADIUS,
+    ASTEROID_KINDS,
+    ASTEROID_SPAWN_RATE
+)
+from CONSTS.SCREEN import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class AsteroidField(pygame.sprite.Sprite):
@@ -31,9 +36,9 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def __init__(self):
         """Initialize the asteroid field manager.
-        
+
         Sets up the sprite container and initializes the spawn timer for creating new asteroids.
-        
+
         Returns:
             None
         """
@@ -42,12 +47,12 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def spawn(self, radius, position, velocity):
         """Create a new asteroid with specified parameters.
-        
+
         Args:
             radius: float - The radius of the new asteroid
             position: pygame.Vector2 - The spawn position of the asteroid
             velocity: pygame.Vector2 - The initial velocity vector of the asteroid
-            
+
         Returns:
             None
         """
@@ -56,13 +61,13 @@ class AsteroidField(pygame.sprite.Sprite):
 
     def update(self, dt):
         """Update the asteroid field state and spawn new asteroids.
-        
+
         Manages the asteroid spawn timer and creates new asteroids at random edges
         of the screen with random properties when the timer expires.
-        
+
         Args:
             dt: float - Delta time since last update
-            
+
         Returns:
             None
         """

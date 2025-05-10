@@ -11,7 +11,7 @@ COLOR_WHITE = (255, 255, 255)
 COLOR_BLACK = (0, 0, 0)
 
 # Pure red color in RGB format (255, 0, 0)
-COLOR_RED =   (255, 0, 0)
+COLOR_RED = (255, 0, 0)
 
 # Light blue color in RGB format (0, 100, 255)
 COLOR_BLUE = (0, 100, 255)

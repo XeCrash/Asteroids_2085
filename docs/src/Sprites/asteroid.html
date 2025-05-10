@@ -56,69 +56,71 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Asteroid(CircleShape):
-   def __init__(self, x, y, radius):
-      &#34;&#34;&#34;Initialize an asteroid object.
-      
-      Args:
-          x: float - Initial x-coordinate position
-          y: float - Initial y-coordinate position
-          radius: float - Radius of the asteroid
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      super().__init__(x, y, radius)
-      
-   def draw(self, screen):
-      &#34;&#34;&#34;Render the asteroid on the screen.
-      
-      Args:
-          screen: pygame.Surface - The surface to draw the asteroid on
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      pygame.draw.circle(screen, COLOR_RED, [self.position.x, self.position.y], self.radius, 2)
-   
-   def update(self, dt):
-      &#34;&#34;&#34;Update the asteroid&#39;s position based on its velocity.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      self.position += (self.velocity * dt)
-      
-   def split(self, dt):
-      &#34;&#34;&#34;Split the asteroid into smaller asteroids when hit.
-      
-      Creates two smaller asteroids with diverging trajectories if the current
-      asteroid is large enough. Removes the current asteroid.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      self.kill()
-      
-      small_asteroid = ASTEROID_MIN_RADIUS
-      
-      if self.radius &lt;= small_asteroid:
-         return #do nothing 
-      else:
-         #  split off into two new asteroids -20 radius from the current size of the killed asteroid
-         rand_angle = random.uniform(20, 50)
-         new_vec2_right = self.velocity.rotate(rand_angle)
-         new_vec2_left = self.velocity.rotate(-rand_angle)
-         new_radius = self.radius - ASTEROID_MIN_RADIUS
-         new_asteroid_one = Asteroid(self.position.x, self.position.y, new_radius)
-         new_asteroid_one.velocity = (new_vec2_right * 1.2)
-         new_asteroid_two = Asteroid(self.position.x, self.position.y, new_radius)
-         new_asteroid_two.velocity = (new_vec2_left * 1.2)</code></pre>
+    def __init__(self, x, y, radius):
+        &#34;&#34;&#34;Initialize an asteroid object.
+
+        Args:
+            x: float - Initial x-coordinate position
+            y: float - Initial y-coordinate position
+            radius: float - Radius of the asteroid
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        super().__init__(x, y, radius)
+
+    def draw(self, screen):
+        &#34;&#34;&#34;Render the asteroid on the screen.
+
+        Args:
+            screen: pygame.Surface - The surface to draw the asteroid on
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        pygame.draw.circle(
+            screen, COLOR_RED, [self.position.x, self.position.y], self.radius, 2
+        )
+
+    def update(self, dt):
+        &#34;&#34;&#34;Update the asteroid&#39;s position based on its velocity.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.position += self.velocity * dt
+
+    def split(self):
+        &#34;&#34;&#34;Split the asteroid into smaller asteroids when hit.
+
+        Creates two smaller asteroids with diverging trajectories if the current
+        asteroid is large enough. Removes the current asteroid.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.kill()
+
+        small_asteroid = ASTEROID_MIN_RADIUS
+
+        if self.radius &lt;= small_asteroid:
+            return  # do nothing
+        else:
+            # Split off into two new asteroids with random rotations and velocities
+            rand_angle = random.uniform(20, 50)
+            new_vec2_right = self.velocity.rotate(rand_angle)
+            new_vec2_left = self.velocity.rotate(-rand_angle)
+            new_radius = self.radius - ASTEROID_MIN_RADIUS
+            new_asteroid_one = Asteroid(self.position.x, self.position.y, new_radius)
+            new_asteroid_one.velocity = new_vec2_right * 1.2
+            new_asteroid_two = Asteroid(self.position.x, self.position.y, new_radius)
+            new_asteroid_two.velocity = new_vec2_left * 1.2</code></pre>
 </details>
 <div class="desc"><p>simple base class for visible game objects</p>
 <p>pygame.sprite.Sprite(*groups): return Sprite</p>
@@ -157,15 +159,17 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def draw(self, screen):
-   &#34;&#34;&#34;Render the asteroid on the screen.
-   
-   Args:
-       screen: pygame.Surface - The surface to draw the asteroid on
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   pygame.draw.circle(screen, COLOR_RED, [self.position.x, self.position.y], self.radius, 2)</code></pre>
+    &#34;&#34;&#34;Render the asteroid on the screen.
+
+    Args:
+        screen: pygame.Surface - The surface to draw the asteroid on
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    pygame.draw.circle(
+        screen, COLOR_RED, [self.position.x, self.position.y], self.radius, 2
+    )</code></pre>
 </details>
 <div class="desc"><p>Render the asteroid on the screen.</p>
 <h2 id="args">Args</h2>
@@ -177,41 +181,41 @@ before adding the Sprite to Groups.</p>
 <p>None</p></div>
 </dd>
 <dt id="src.Sprites.asteroid.Asteroid.split"><code class="name flex">
-<span>def <span class="ident">split</span></span>(<span>self, dt)</span>
+<span>def <span class="ident">split</span></span>(<span>self)</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split(self, dt):
-   &#34;&#34;&#34;Split the asteroid into smaller asteroids when hit.
-   
-   Creates two smaller asteroids with diverging trajectories if the current
-   asteroid is large enough. Removes the current asteroid.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   self.kill()
-   
-   small_asteroid = ASTEROID_MIN_RADIUS
-   
-   if self.radius &lt;= small_asteroid:
-      return #do nothing 
-   else:
-      #  split off into two new asteroids -20 radius from the current size of the killed asteroid
-      rand_angle = random.uniform(20, 50)
-      new_vec2_right = self.velocity.rotate(rand_angle)
-      new_vec2_left = self.velocity.rotate(-rand_angle)
-      new_radius = self.radius - ASTEROID_MIN_RADIUS
-      new_asteroid_one = Asteroid(self.position.x, self.position.y, new_radius)
-      new_asteroid_one.velocity = (new_vec2_right * 1.2)
-      new_asteroid_two = Asteroid(self.position.x, self.position.y, new_radius)
-      new_asteroid_two.velocity = (new_vec2_left * 1.2)</code></pre>
+<pre><code class="python">def split(self):
+    &#34;&#34;&#34;Split the asteroid into smaller asteroids when hit.
+
+    Creates two smaller asteroids with diverging trajectories if the current
+    asteroid is large enough. Removes the current asteroid.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.kill()
+
+    small_asteroid = ASTEROID_MIN_RADIUS
+
+    if self.radius &lt;= small_asteroid:
+        return  # do nothing
+    else:
+        # Split off into two new asteroids with random rotations and velocities
+        rand_angle = random.uniform(20, 50)
+        new_vec2_right = self.velocity.rotate(rand_angle)
+        new_vec2_left = self.velocity.rotate(-rand_angle)
+        new_radius = self.radius - ASTEROID_MIN_RADIUS
+        new_asteroid_one = Asteroid(self.position.x, self.position.y, new_radius)
+        new_asteroid_one.velocity = new_vec2_right * 1.2
+        new_asteroid_two = Asteroid(self.position.x, self.position.y, new_radius)
+        new_asteroid_two.velocity = new_vec2_left * 1.2</code></pre>
 </details>
 <div class="desc"><p>Split the asteroid into smaller asteroids when hit.</p>
 <p>Creates two smaller asteroids with diverging trajectories if the current
@@ -233,15 +237,15 @@ asteroid is large enough. Removes the current asteroid.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update(self, dt):
-   &#34;&#34;&#34;Update the asteroid&#39;s position based on its velocity.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   self.position += (self.velocity * dt)</code></pre>
+    &#34;&#34;&#34;Update the asteroid&#39;s position based on its velocity.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.position += self.velocity * dt</code></pre>
 </details>
 <div class="desc"><p>Update the asteroid's position based on its velocity.</p>
 <h2 id="args">Args</h2>

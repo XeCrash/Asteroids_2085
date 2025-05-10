@@ -56,126 +56,160 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Player(CircleShape):
-   def __init__(self, x, y):
-      &#34;&#34;&#34;Initialize the player object.
-      
-      Args:
-          x: float - Initial x-coordinate position
-          y: float - Initial y-coordinate position
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      super().__init__(x, y, PLAYER_RADIUS)
-      self.rotation = 0
-      self.timer = 0.0
-      self.kill_count = 0
-      
-   # in the player class
-   def triangle(self):
-      &#34;&#34;&#34;Calculate the vertices of the player&#39;s triangular shape.
-      
-      Returns:
-          list: Three pygame.Vector2 points representing the triangle vertices
-      &#34;&#34;&#34;
-      forward = pygame.Vector2(0, -1).rotate(self.rotation)  # Changed from 1 to -1
-      right = pygame.Vector2(0, -1).rotate(self.rotation + 90) * self.radius / 1.5  # Changed from 1 to -1
-      a = self.position + forward * self.radius
-      b = self.position - forward * self.radius - right
-      c = self.position - forward * self.radius + right
-      return [a, b, c]
-      
-      # overrides func draw(self, screen) in CircleShape class
-   def draw(self, screen):
-      &#34;&#34;&#34;Render the player&#39;s triangular ship on the screen.
-      
-      Args:
-          screen: pygame.Surface - The surface to draw the player on
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      pygame.draw.polygon(screen, COLOR_WHITE, self.triangle(), PLAYER_POLYGON_LINE_WIDTH)
-   
-   def rotate(self, dt):
-      &#34;&#34;&#34;Rotate the player&#39;s ship.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      self.rotation += (PLAYER_TURN_SPEED * dt)
-   
-   def move(self, dt):
-      &#34;&#34;&#34;Move the player&#39;s ship in its current direction.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      # Create a unit vector pointing up (0, -1)
-      forwardVec = pygame.Vector2(0, -1)  # Changed from 1 to -1
-      # Rotate the vector by player&#39;s rotation
-      direction = forwardVec.rotate(self.rotation)
-      # Scale the vector by speed and time
-      movement = direction * PLAYER_MOVEMENT_SPEED * dt
-      # Update position
-      self.position += movement
-      
-   def shoot(self):
-      &#34;&#34;&#34;Create a new shot projectile in the direction the player is facing.
-      
-      Returns:
-          None
-      &#34;&#34;&#34;
-      shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
-      shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+    def __init__(self, x, y):
+        &#34;&#34;&#34;Initialize the player object.
 
+        Args:
+            x: float - Initial x-coordinate position
+            y: float - Initial y-coordinate position
 
-   def update(self, dt):
-      &#34;&#34;&#34;Update the player&#39;s state based on input and time.
-      
-      Handles player movement, rotation, and shooting based on keyboard input.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      keys = pygame.key.get_pressed()
+        Returns:
+            None
+        &#34;&#34;&#34;
+        super().__init__(x, y, PLAYER_RADIUS)
+        self.rotation = 0
+        self.timer = 0.0
+        self.kill_count = 0
+        self.games_played = 0
+        self.high_score = 0
+        self.lives = PLAYER_LIVES
+        self.still_alive = True
+        self.level = 1
+        self.xp_to_next_level = self.level * 150
+        self.xp = 0
+        self.xp_bar_percentage = self.xp / self.xp_to_next_level
+        self.xp_bar_color = COLOR_GREEN
 
-      if keys[pygame.K_w]: #Forward Movement
-         self.move(dt)
-            
-      if keys[pygame.K_a] and keys[pygame.K_s]: #Left Rotation &amp; backwards moving
-         self.rotate(dt)
-      elif keys[pygame.K_a]: #Left Rotation and/or Forward Movement &amp; Left Rotation
-         self.rotate(-dt)
- 
-      if keys[pygame.K_s]: #Backwards Movement
-         self.move(-dt)
-         
-      if keys[pygame.K_d] and keys[pygame.K_s]: #Right Rotation &amp; backwards moving
-         self.rotate(-dt)
-      elif keys[pygame.K_d]: #Right Rotation and/or Forward Movement &amp; Right Rotation
-         self.rotate(dt)
-         
-      if self.timer &gt; 0:
-         self.timer -= dt
-      elif self.timer &lt; 0:
-         self.timer = 0 # make sure we normalize it back to 0 incase we go negative 
-         
-      if keys[pygame.K_SPACE]:
-         if self.timer &gt; 0:
-            pass # dont shoot
-         else:
-            self.shoot()
-            self.timer = PLAYER_SHOOT_COOLDOWN</code></pre>
+    def reset(self):
+        &#34;&#34;&#34;Reset the player&#39;s state to default values.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.position = pygame.Vector2(0, 0)
+        self.rotation = 0
+        self.timer = 0.0
+        self.kill_count = 0
+        self.lives = PLAYER_LIVES
+        self.still_alive = True
+
+    def triangle(self):
+        &#34;&#34;&#34;Calculate the vertices of the player&#39;s triangular shape.
+
+        Returns:
+            list: Three pygame.Vector2 points representing the triangle&#39;s sides
+        &#34;&#34;&#34;
+        forward = pygame.Vector2(0, -1).rotate(self.rotation)  # Forward vector
+        right = (
+            pygame.Vector2(0, -1).rotate(self.rotation + 90)
+            * self.radius / 1.5
+        )  # Changed from 1 to -1
+        a = self.position + forward * self.radius
+        b = self.position - forward * self.radius - right
+        c = self.position - forward * self.radius + right
+        return [a, b, c]
+
+        # overrides func draw(self, screen) in CircleShape class
+
+    def draw(self, screen):
+        &#34;&#34;&#34;Render the player&#39;s triangular ship on the screen.
+
+        Args:
+            screen: pygame.Surface - The surface to draw the player on
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        pygame.draw.polygon(
+            screen, COLOR_WHITE, self.triangle(), PLAYER_POLYGON_LINE_WIDTH
+        )
+
+    def rotate(self, dt):
+        &#34;&#34;&#34;Rotate the player&#39;s ship.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        self.rotation += PLAYER_TURN_SPEED * dt
+
+    def move(self, dt):
+        &#34;&#34;&#34;Move the player&#39;s ship in its current direction.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        # Create a unit vector pointing up (0, -1)
+        forwardVec = pygame.Vector2(0, -1)  # Changed from 1 to -1
+        # Rotate the vector by player&#39;s rotation
+        direction = forwardVec.rotate(self.rotation)
+        # Scale the vector by speed and time
+        movement = direction * PLAYER_MOVEMENT_SPEED * dt
+        # Update position
+        self.position += movement
+
+    def shoot(self):
+        &#34;&#34;&#34;Create a new shot projectile in the direction the player is facing.
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        # Spawn shot at player&#39;s current position
+        shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
+        # Set the shot&#39;s velocity in the direction the player is facing
+        forwardVec = pygame.Vector2(0, -1)
+        # Assuming forward is up (0, -1) towards front of player
+        shot.velocity = forwardVec.rotate(self.rotation) * PLAYER_SHOOT_SPEED
+
+    def update(self, dt):
+        &#34;&#34;&#34;Update the player&#39;s state based on input and time.
+
+        Handles player movement, rotation, and shooting based on keyboard input.    # noqa: E501
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+        &#34;&#34;&#34;
+        keys = pygame.key.get_pressed()
+        # Forward Movement
+        if keys[KEY_W]:
+            self.move(dt)
+        # Left Rotation &amp; backwards moving
+        if keys[KEY_A] and keys[KEY_S]:
+            self.rotate(dt)
+        # Left Rotation and/or Forward Movement &amp; Left Rotation
+        elif keys[KEY_A]:
+            self.rotate(-dt)
+        # Backwards Movement
+        if keys[KEY_S]:
+            self.move(-dt)
+        # Right Rotation &amp; backwards moving
+        if keys[KEY_S] and keys[KEY_D]:
+            self.rotate(-dt)
+        # Right Rotation and/or Forward Movement &amp; Right Rotation
+        elif keys[KEY_D]:
+            self.rotate(dt)
+
+        # Update shot cooldown timer and then shoot
+        # if space is pressed and cooldown is over
+        if self.timer &gt; 0:
+            self.timer -= dt
+        elif self.timer &lt; 0:
+            self.timer = 0  # reset timer to 0 if we go negative
+
+        if keys[KEY_SPACE]:
+            if self.timer &gt; 0:
+                pass  # dont shoot
+            else:
+                self.shoot()
+                self.timer = PLAYER_SHOOT_COOLDOWN</code></pre>
 </details>
 <div class="desc"><p>simple base class for visible game objects</p>
 <p>pygame.sprite.Sprite(*groups): return Sprite</p>
@@ -212,15 +246,17 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def draw(self, screen):
-   &#34;&#34;&#34;Render the player&#39;s triangular ship on the screen.
-   
-   Args:
-       screen: pygame.Surface - The surface to draw the player on
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   pygame.draw.polygon(screen, COLOR_WHITE, self.triangle(), PLAYER_POLYGON_LINE_WIDTH)</code></pre>
+    &#34;&#34;&#34;Render the player&#39;s triangular ship on the screen.
+
+    Args:
+        screen: pygame.Surface - The surface to draw the player on
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    pygame.draw.polygon(
+        screen, COLOR_WHITE, self.triangle(), PLAYER_POLYGON_LINE_WIDTH
+    )</code></pre>
 </details>
 <div class="desc"><p>Render the player's triangular ship on the screen.</p>
 <h2 id="args">Args</h2>
@@ -240,22 +276,22 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def move(self, dt):
-   &#34;&#34;&#34;Move the player&#39;s ship in its current direction.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   # Create a unit vector pointing up (0, -1)
-   forwardVec = pygame.Vector2(0, -1)  # Changed from 1 to -1
-   # Rotate the vector by player&#39;s rotation
-   direction = forwardVec.rotate(self.rotation)
-   # Scale the vector by speed and time
-   movement = direction * PLAYER_MOVEMENT_SPEED * dt
-   # Update position
-   self.position += movement</code></pre>
+    &#34;&#34;&#34;Move the player&#39;s ship in its current direction.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    # Create a unit vector pointing up (0, -1)
+    forwardVec = pygame.Vector2(0, -1)  # Changed from 1 to -1
+    # Rotate the vector by player&#39;s rotation
+    direction = forwardVec.rotate(self.rotation)
+    # Scale the vector by speed and time
+    movement = direction * PLAYER_MOVEMENT_SPEED * dt
+    # Update position
+    self.position += movement</code></pre>
 </details>
 <div class="desc"><p>Move the player's ship in its current direction.</p>
 <h2 id="args">Args</h2>
@@ -263,6 +299,31 @@ before adding the Sprite to Groups.</p>
 <dt><strong><code>dt</code></strong></dt>
 <dd>float - Delta time since last update</dd>
 </dl>
+<h2 id="returns">Returns</h2>
+<p>None</p></div>
+</dd>
+<dt id="src.Sprites.player.Player.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset(self):
+    &#34;&#34;&#34;Reset the player&#39;s state to default values.
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.position = pygame.Vector2(0, 0)
+    self.rotation = 0
+    self.timer = 0.0
+    self.kill_count = 0
+    self.lives = PLAYER_LIVES
+    self.still_alive = True</code></pre>
+</details>
+<div class="desc"><p>Reset the player's state to default values.</p>
 <h2 id="returns">Returns</h2>
 <p>None</p></div>
 </dd>
@@ -275,15 +336,15 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def rotate(self, dt):
-   &#34;&#34;&#34;Rotate the player&#39;s ship.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   self.rotation += (PLAYER_TURN_SPEED * dt)</code></pre>
+    &#34;&#34;&#34;Rotate the player&#39;s ship.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    self.rotation += PLAYER_TURN_SPEED * dt</code></pre>
 </details>
 <div class="desc"><p>Rotate the player's ship.</p>
 <h2 id="args">Args</h2>
@@ -303,13 +364,17 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def shoot(self):
-   &#34;&#34;&#34;Create a new shot projectile in the direction the player is facing.
-   
-   Returns:
-       None
-   &#34;&#34;&#34;
-   shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
-   shot.velocity = pygame.Vector2(0, -1).rotate(self.rotation) * PLAYER_SHOOT_SPEED</code></pre>
+    &#34;&#34;&#34;Create a new shot projectile in the direction the player is facing.
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    # Spawn shot at player&#39;s current position
+    shot = Shot(self.position.x, self.position.y, SHOT_RADIUS)
+    # Set the shot&#39;s velocity in the direction the player is facing
+    forwardVec = pygame.Vector2(0, -1)
+    # Assuming forward is up (0, -1) towards front of player
+    shot.velocity = forwardVec.rotate(self.rotation) * PLAYER_SHOOT_SPEED</code></pre>
 </details>
 <div class="desc"><p>Create a new shot projectile in the direction the player is facing.</p>
 <h2 id="returns">Returns</h2>
@@ -324,25 +389,28 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def triangle(self):
-   &#34;&#34;&#34;Calculate the vertices of the player&#39;s triangular shape.
-   
-   Returns:
-       list: Three pygame.Vector2 points representing the triangle vertices
-   &#34;&#34;&#34;
-   forward = pygame.Vector2(0, -1).rotate(self.rotation)  # Changed from 1 to -1
-   right = pygame.Vector2(0, -1).rotate(self.rotation + 90) * self.radius / 1.5  # Changed from 1 to -1
-   a = self.position + forward * self.radius
-   b = self.position - forward * self.radius - right
-   c = self.position - forward * self.radius + right
-   return [a, b, c]
-   
-   # overrides func draw(self, screen) in CircleShape class</code></pre>
+    &#34;&#34;&#34;Calculate the vertices of the player&#39;s triangular shape.
+
+    Returns:
+        list: Three pygame.Vector2 points representing the triangle&#39;s sides
+    &#34;&#34;&#34;
+    forward = pygame.Vector2(0, -1).rotate(self.rotation)  # Forward vector
+    right = (
+        pygame.Vector2(0, -1).rotate(self.rotation + 90)
+        * self.radius / 1.5
+    )  # Changed from 1 to -1
+    a = self.position + forward * self.radius
+    b = self.position - forward * self.radius - right
+    c = self.position - forward * self.radius + right
+    return [a, b, c]
+
+    # overrides func draw(self, screen) in CircleShape class</code></pre>
 </details>
 <div class="desc"><p>Calculate the vertices of the player's triangular shape.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>list</code></dt>
-<dd>Three pygame.Vector2 points representing the triangle vertices</dd>
+<dd>Three pygame.Vector2 points representing the triangle's sides</dd>
 </dl></div>
 </dd>
 <dt id="src.Sprites.player.Player.update"><code class="name flex">
@@ -354,48 +422,53 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update(self, dt):
-   &#34;&#34;&#34;Update the player&#39;s state based on input and time.
-   
-   Handles player movement, rotation, and shooting based on keyboard input.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-   &#34;&#34;&#34;
-   keys = pygame.key.get_pressed()
+    &#34;&#34;&#34;Update the player&#39;s state based on input and time.
 
-   if keys[pygame.K_w]: #Forward Movement
-      self.move(dt)
-         
-   if keys[pygame.K_a] and keys[pygame.K_s]: #Left Rotation &amp; backwards moving
-      self.rotate(dt)
-   elif keys[pygame.K_a]: #Left Rotation and/or Forward Movement &amp; Left Rotation
-      self.rotate(-dt)
+    Handles player movement, rotation, and shooting based on keyboard input.    # noqa: E501
 
-   if keys[pygame.K_s]: #Backwards Movement
-      self.move(-dt)
-      
-   if keys[pygame.K_d] and keys[pygame.K_s]: #Right Rotation &amp; backwards moving
-      self.rotate(-dt)
-   elif keys[pygame.K_d]: #Right Rotation and/or Forward Movement &amp; Right Rotation
-      self.rotate(dt)
-      
-   if self.timer &gt; 0:
-      self.timer -= dt
-   elif self.timer &lt; 0:
-      self.timer = 0 # make sure we normalize it back to 0 incase we go negative 
-      
-   if keys[pygame.K_SPACE]:
-      if self.timer &gt; 0:
-         pass # dont shoot
-      else:
-         self.shoot()
-         self.timer = PLAYER_SHOOT_COOLDOWN</code></pre>
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+    &#34;&#34;&#34;
+    keys = pygame.key.get_pressed()
+    # Forward Movement
+    if keys[KEY_W]:
+        self.move(dt)
+    # Left Rotation &amp; backwards moving
+    if keys[KEY_A] and keys[KEY_S]:
+        self.rotate(dt)
+    # Left Rotation and/or Forward Movement &amp; Left Rotation
+    elif keys[KEY_A]:
+        self.rotate(-dt)
+    # Backwards Movement
+    if keys[KEY_S]:
+        self.move(-dt)
+    # Right Rotation &amp; backwards moving
+    if keys[KEY_S] and keys[KEY_D]:
+        self.rotate(-dt)
+    # Right Rotation and/or Forward Movement &amp; Right Rotation
+    elif keys[KEY_D]:
+        self.rotate(dt)
+
+    # Update shot cooldown timer and then shoot
+    # if space is pressed and cooldown is over
+    if self.timer &gt; 0:
+        self.timer -= dt
+    elif self.timer &lt; 0:
+        self.timer = 0  # reset timer to 0 if we go negative
+
+    if keys[KEY_SPACE]:
+        if self.timer &gt; 0:
+            pass  # dont shoot
+        else:
+            self.shoot()
+            self.timer = PLAYER_SHOOT_COOLDOWN</code></pre>
 </details>
 <div class="desc"><p>Update the player's state based on input and time.</p>
-<p>Handles player movement, rotation, and shooting based on keyboard input.</p>
+<p>Handles player movement, rotation, and shooting based on keyboard input.
+# noqa: E501</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>dt</code></strong></dt>
@@ -426,6 +499,7 @@ before adding the Sprite to Groups.</p>
 <ul class="two-column">
 <li><code><a title="src.Sprites.player.Player.draw" href="#src.Sprites.player.Player.draw">draw</a></code></li>
 <li><code><a title="src.Sprites.player.Player.move" href="#src.Sprites.player.Player.move">move</a></code></li>
+<li><code><a title="src.Sprites.player.Player.reset" href="#src.Sprites.player.Player.reset">reset</a></code></li>
 <li><code><a title="src.Sprites.player.Player.rotate" href="#src.Sprites.player.Player.rotate">rotate</a></code></li>
 <li><code><a title="src.Sprites.player.Player.shoot" href="#src.Sprites.player.Player.shoot">shoot</a></code></li>
 <li><code><a title="src.Sprites.player.Player.triangle" href="#src.Sprites.player.Player.triangle">triangle</a></code></li>

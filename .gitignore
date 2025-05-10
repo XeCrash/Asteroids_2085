@@ -1,4 +1,9 @@
-.venv/
+
 __pycache__/
 
+.venv/
 *.log*
+*.code-workspace
+
+# specific files to exclude from version control
+test.md

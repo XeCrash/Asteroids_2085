@@ -56,76 +56,76 @@ el.replaceWith(d);
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class CircleShape(pygame.sprite.Sprite):
-   def __init__(self, x, y, radius):
-      &#34;&#34;&#34;Initialize a circular game object.
-      
-      Args:
-          x: float - Initial x-coordinate position
-          y: float - Initial y-coordinate position
-          radius: float - Radius of the circular object
-          
-      Returns:
-          None
-      &#34;&#34;&#34;
-      # we will be using this later
-      if hasattr(self, &#34;containers&#34;):
-         super().__init__(self.containers)
-      else:
-         super().__init__()
+    def __init__(self, x, y, radius):
+        &#34;&#34;&#34;Initialize a circular game object.
 
-      self.position = pygame.Vector2(x, y)
-      self.velocity = pygame.Vector2(0, 0)
-      self.radius = radius
+        Args:
+            x: float - Initial x-coordinate position
+            y: float - Initial y-coordinate position
+            radius: float - Radius of the circular object
 
-   def draw(self, screen):
-      &#34;&#34;&#34;Draw the circular object on the screen.
-      
-      Args:
-          screen: pygame.Surface - The surface to draw on
-          
-      Returns:
-          None
-          
-      Note:
-          This is an abstract method that must be overridden by subclasses.
-      &#34;&#34;&#34;
-      # sub-classes must override
-      pass
+        Returns:
+            None
+        &#34;&#34;&#34;
+        # we will be using this later
+        if hasattr(self, &#34;containers&#34;):
+            super().__init__(self.containers)
+        else:
+            super().__init__()
 
-   def update(self, dt):
-      &#34;&#34;&#34;Update the object&#39;s state.
-      
-      Args:
-          dt: float - Delta time since last update
-          
-      Returns:
-          None
-          
-      Note:
-          This is an abstract method that must be overridden by subclasses.
-      &#34;&#34;&#34;
-      # sub-classes must override
-      pass
+        self.position = pygame.Vector2(x, y)
+        self.velocity = pygame.Vector2(0, 0)
+        self.radius = radius
 
-   def colliding_with(self, other: &#34;CircleShape&#34;) -&gt; bool:
-      &#34;&#34;&#34;Check if this object is colliding with another circular object.
-      
-      Args:
-          other: CircleShape - The other circular object to check collision with
-          
-      Returns:
-          bool: True if objects are colliding, False otherwise
-          
-      Note:
-          This method uses the distance formula to check for collision.
-      &#34;&#34;&#34;
-      distance = pygame.Vector2.distance_to(self.position, other.position)
-      # Get the radii of both circles
-      r1 = self.radius
-      r2 = other.radius
-      
-       # Compare the distance with the combined radii
-      return distance &lt;= (r1 + r2) # Return True if colliding, False otherwise</code></pre>
+    def draw(self, screen):
+        &#34;&#34;&#34;Draw the circular object on the screen.
+
+        Args:
+            screen: pygame.Surface - The surface to draw on
+
+        Returns:
+            None
+
+        Note:
+            This is an abstract method that must be overridden by subclasses.
+        &#34;&#34;&#34;
+        # sub-classes must override
+        pass
+
+    def update(self, dt):
+        &#34;&#34;&#34;Update the object&#39;s state.
+
+        Args:
+            dt: float - Delta time since last update
+
+        Returns:
+            None
+
+        Note:
+            This is an abstract method that must be overridden by subclasses.
+        &#34;&#34;&#34;
+        # sub-classes must override
+        pass
+
+    def colliding_with(self, other: &#34;CircleShape&#34;) -&gt; bool:
+        &#34;&#34;&#34;Check if this object is colliding with another circular object.
+
+        Args:
+            other: CircleShape - The other circular object to check collision with
+
+        Returns:
+            bool: True if objects are colliding, False otherwise
+
+        Note:
+            This method uses the distance formula to check for collision.
+        &#34;&#34;&#34;
+        distance = pygame.Vector2.distance_to(self.position, other.position)
+        # Get the radii of both circles
+        r1 = self.radius
+        r2 = other.radius
+
+        # Compare the distance with the combined radii
+        return distance &lt;= (r1 + r2)  # Return True if colliding, False otherwise</code></pre>
 </details>
 <div class="desc"><p>simple base class for visible game objects</p>
 <p>pygame.sprite.Sprite(*groups): return Sprite</p>
@@ -163,24 +163,24 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def colliding_with(self, other: &#34;CircleShape&#34;) -&gt; bool:
-   &#34;&#34;&#34;Check if this object is colliding with another circular object.
-   
-   Args:
-       other: CircleShape - The other circular object to check collision with
-       
-   Returns:
-       bool: True if objects are colliding, False otherwise
-       
-   Note:
-       This method uses the distance formula to check for collision.
-   &#34;&#34;&#34;
-   distance = pygame.Vector2.distance_to(self.position, other.position)
-   # Get the radii of both circles
-   r1 = self.radius
-   r2 = other.radius
-   
+    &#34;&#34;&#34;Check if this object is colliding with another circular object.
+
+    Args:
+        other: CircleShape - The other circular object to check collision with
+
+    Returns:
+        bool: True if objects are colliding, False otherwise
+
+    Note:
+        This method uses the distance formula to check for collision.
+    &#34;&#34;&#34;
+    distance = pygame.Vector2.distance_to(self.position, other.position)
+    # Get the radii of both circles
+    r1 = self.radius
+    r2 = other.radius
+
     # Compare the distance with the combined radii
-   return distance &lt;= (r1 + r2) # Return True if colliding, False otherwise</code></pre>
+    return distance &lt;= (r1 + r2)  # Return True if colliding, False otherwise</code></pre>
 </details>
 <div class="desc"><p>Check if this object is colliding with another circular object.</p>
 <h2 id="args">Args</h2>
@@ -205,19 +205,19 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def draw(self, screen):
-   &#34;&#34;&#34;Draw the circular object on the screen.
-   
-   Args:
-       screen: pygame.Surface - The surface to draw on
-       
-   Returns:
-       None
-       
-   Note:
-       This is an abstract method that must be overridden by subclasses.
-   &#34;&#34;&#34;
-   # sub-classes must override
-   pass</code></pre>
+    &#34;&#34;&#34;Draw the circular object on the screen.
+
+    Args:
+        screen: pygame.Surface - The surface to draw on
+
+    Returns:
+        None
+
+    Note:
+        This is an abstract method that must be overridden by subclasses.
+    &#34;&#34;&#34;
+    # sub-classes must override
+    pass</code></pre>
 </details>
 <div class="desc"><p>Draw the circular object on the screen.</p>
 <h2 id="args">Args</h2>
@@ -239,19 +239,19 @@ before adding the Sprite to Groups.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def update(self, dt):
-   &#34;&#34;&#34;Update the object&#39;s state.
-   
-   Args:
-       dt: float - Delta time since last update
-       
-   Returns:
-       None
-       
-   Note:
-       This is an abstract method that must be overridden by subclasses.
-   &#34;&#34;&#34;
-   # sub-classes must override
-   pass</code></pre>
+    &#34;&#34;&#34;Update the object&#39;s state.
+
+    Args:
+        dt: float - Delta time since last update
+
+    Returns:
+        None
+
+    Note:
+        This is an abstract method that must be overridden by subclasses.
+    &#34;&#34;&#34;
+    # sub-classes must override
+    pass</code></pre>
 </details>
 <div class="desc"><p>Update the object's state.</p>
 <h2 id="args">Args</h2>

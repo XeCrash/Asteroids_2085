@@ -5,6 +5,9 @@
     including size, movement speed, and shooting behavior.
 """
 
+# The amount of lives the player has at the start of the game
+PLAYER_LIVES = 3
+
 # Player ship collision radius in pixels
 PLAYER_RADIUS = 20
 

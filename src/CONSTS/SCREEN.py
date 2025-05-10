@@ -1,10 +1,11 @@
 """Constants related to the game window of Asteroids 2085.
-    
+
 This module contains configuration for the game window & related settings, including
 dimensions, frame rate, and display flags.
 """
 
 import pygame
+
 # Window width in pixels (16:9 aspect ratio)
 SCREEN_WIDTH = 1280
 
