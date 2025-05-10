@@ -51,13 +51,13 @@ jobs:
       run: |
         choco --version || echo "Chocolatey is not installed"
         choco install python --version=3.13.1
-        python --version || echo "Python 3.13.1 installation failed"
+        python3.13 --version || echo "Python 3.13.1 installation failed"
     
     - name: Install Python 3.13.1 (macOS)
       if: runner.os == 'macOS'
       run: |
         brew --version || echo "Homebrew is not installed"
-        brew install python@3.13.1
+        brew install python@3.13
         python3.13 --version || echo "Python 3.13.1 installation failed"
         
     - name: Cache Python dependencies 🫙
