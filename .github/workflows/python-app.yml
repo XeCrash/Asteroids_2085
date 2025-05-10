@@ -43,11 +43,10 @@ jobs:
         pip install flake8==6.0.0 pytest==7.4.0
       # No shell specified, will use default for the runner OS. These commands are generally cross-platform.
 
-    - name: Install project dependencies from requirements.txt (Linux and macOS)
+    - name: Install project dependencies from requirements.txt (Linux)
       if: runner.os == 'Linux' || runner.os == 'macOS' # Corrected condition
       run: |
         if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "requirements.txt not found"; fi
-      shell: bash
 
     - name: Install project dependencies from requirements.txt (Windows)
       if: runner.os == 'Windows' # Corrected condition
