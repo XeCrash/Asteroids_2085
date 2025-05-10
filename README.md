@@ -1,4 +1,4 @@
-# ASTEROIDS 2085 (WIP) ![ Asteroids (Linux, windows, & macOS) Builds ](https://github.com/XeCrash/Asteroids_2085/actions/workflows/python-app.yml/badge.svg)
+# ASTEROIDS 2085 (WIP) ![ Asteroids (Linux, windows, & macOS) Builds ](https://github.com/XeCrash/Asteroids_2085/actions/workflows/asteroids-ci-builds.yml.yml/badge.svg)
 
 Built with pygame 2.6.1, SDL 2.28.4, Python 3.12.3, &amp; Some Love ™️💯
 
