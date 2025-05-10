@@ -67,7 +67,7 @@ jobs:
     - name: Lint with flake8
       run: |
         # For now, allow to pass. Remove --exit-zero to enforce linting.
-        flake8 . --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
+        flake8 . --count --max-complexity=30 --max-line-length=100 --statistics
       # Consider adding --show-source to see the offending lines directly in the log
 
     - name: Run pytest
