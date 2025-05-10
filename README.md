@@ -1,4 +1,4 @@
-# ASTEROIDS 2085 (WIP)
+# ASTEROIDS 2085 (WIP) ![Asteroids 2085 CI](https://github.com/XeCrash/Asteroids_2085/actions/workflows/python-app.yml/badge.svg)
 
 Built with pygame 2.6.1, SDL 2.28.4, Python 3.12.3, &amp; Some Love ™️💯
 
