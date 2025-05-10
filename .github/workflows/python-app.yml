@@ -1,6 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
 name: Asteroids 2085
 
 on:
@@ -14,57 +11,77 @@ permissions:
 
 jobs:
   build:
-    
-    runs-on: ${{ matrix.os }} # 🐧(Penux), 🪟(Bloat-dows Bro), 🍏(Bitten-Apple People)
-
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.10"]
-    
+        python-version: ["3.10"] # You can add more versions here like "3.9", "3.11"
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
-    
-    # TODO: Switch to actions/setup-python@v3 when Python 3.13.1 is officially supported.
-    - name: Set up Python
-      uses: actions/setup-python@v3
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3 # Consider updating to v4 or v5 if available and stable
       with:
         python-version: ${{ matrix.python-version }}
-    # TODO: Switch to Python 3.13.1 when it is officially supported.
 
-   
-        
-    - name: Cache Python dependencies 🫙
+    - name: Cache Python Dependencies
       uses: actions/cache@v3
       with:
-          path: | #caching action (linux & Mac, Then Windows path)
-              ~/.cache/pip
-              C:\Users\runneradmin\AppData\Local\pip\Cache
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-              ${{ runner.os }}-pip-
-      
-    - name: Install testing & project dependencies 💉
-      run: | # install all that stuff dog ✔️
+        path: |
+          ~/.cache/pip
+          C:\Users\runneradmin\AppData\Local\pip\Cache
+        key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt') }}-${{ hashFiles('**/requirements-dev.txt') }} # More specific key
+        restore-keys: |
+          ${{ runner.os }}-pip-${{ matrix.python-version }}-
+          ${{ runner.os }}-pip-
+
+    - name: Install base tools and upgrade pip
+      run: |
         python -m pip install --upgrade pip
         pip install flake8==6.0.0 pytest==7.4.0
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # No shell specified, will use default for the runner OS. These commands are generally cross-platform.
+
+    - name: Install project dependencies from requirements.txt (Linux and macOS)
+      if: runner.os == 'Linux' || runner.os == 'macOS' # Corrected condition
+      run: |
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; else echo "requirements.txt not found"; fi
+      shell: bash
+
+    - name: Install project dependencies from requirements.txt (Windows)
+      if: runner.os == 'Windows' # Corrected condition
+      run: |
+        if (Test-Path requirements.txt) {
+          pip install -r requirements.txt
+        } else {
+          Write-Host "requirements.txt not found"
+        }
+      shell: pwsh
+
+    # Optional: Consider a requirements-dev.txt for flake8, pytest
+    # - name: Install development dependencies
+    #   run: |
+    #     if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+    #   # Add OS conditioning if requirements-dev.txt installation needs it
+
+    - name: Lint with flake8
+      run: |
+        # For now, allow to pass. Remove --exit-zero to enforce linting.
+        flake8 . --count --max-complexity=10 --max-line-length=127 --statistics # --exit-zero
+      # Consider adding --show-source to see the offending lines directly in the log
+
+    - name: Run pytest
+      run: |
+        # For now, allow to pass. Remove '|| true' to enforce tests.
+        pytest --maxfail=5 --disable-warnings # || true
         
-    - name: We do a little linting with flake8... for the QA lovers! 🤌🏻
-      run: | # show warnings but pass the build
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        
-    - name: Run pytest # make sure tests are labeled properly (test_*.py) for discovery
-      run: | # no tests currently in the repo but that will change
-        pytest --maxfail=5 --disable-warnings
-        
-   #TODO: Revisit this when i actually careeee 🪳
-   # - name: Run pytest with coverage
-   #   run: |
-   #     pytest --cov=asteroids_2085 --cov-report=xml
-   # - name: Upload coverage to Codecov
-   #   uses: codecov/codecov-action@v3
-   #   with:
-   #     files: coverage.xml
+    # TODO: Revisit coverage reporting
+    # - name: Run pytest with coverage
+    #   run: |
+    #     pip install pytest-cov
+    #     pytest --cov=your_package_name --cov-report=xml
+    # - name: Upload coverage to Codecov
+    #   uses: codecov/codecov-action@v3
+    #   with:
+    #     files: coverage.xml
