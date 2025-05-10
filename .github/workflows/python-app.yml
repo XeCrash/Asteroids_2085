@@ -1,4 +1,4 @@
-name: Asteroids 2085
+name: Asteroid Builds 
 
 on:
   push:
