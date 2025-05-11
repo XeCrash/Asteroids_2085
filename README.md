@@ -48,8 +48,9 @@ To Navigate &amp; Select Menus (*NOTE:* HOLD THE [ L-SHIFT ] *KEY DOWN* WHEN REQ
 ## Main Menu State
 
 - she so sleeeeeeeek
-![Asteroids Game Demo](src/Assets/Images/python_IFUEAJgPCH.gif)
+![Asteroids Menu Demo](src/Assets/Images/Menu.gif)
 
 ## Gameplay State (WIP)
 
 - I want to add a lot more to this project. Time will only tell what that will be though! :)
+![Asteroids Game Demo](src/Assets/Images/Gameplay.gif)

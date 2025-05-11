@@ -31,7 +31,7 @@ logging.basicConfig(
 )
 
 
-def game_loop(
+def game_loop(  # TODO: cut down on game_loop complexity (cur: 27) aiming for a max of 15.
     screen: pygame.Surface,
     clock: pygame.time.Clock,
     menu: Menu,
@@ -46,10 +46,8 @@ def game_loop(
         clock: pygame.time.Clock - Game clock for controlling frame rate
         menu: Menu - The game menu instance
         game_state: str - Current state of the game ('menu' or 'game')
-        logs_to_print: str - The type of logs to print to the console
-        ('none', 'all', 'debug', 'events')
-        log_spam_once: bool - Whether to log certain loop bound info to the
-        console once or not.
+        logs_to_print: str - The type of logs to print to the console ('none', 'all', 'debug', 'events')
+        log_spam_once: bool - Whether to log certain loop bound info to the console once or not.
         clear_internal_debug_on_run: bool - When True, internal_debug.logs file is cleared just like the other logging file.  # noqa: E501
 
     Returns:
