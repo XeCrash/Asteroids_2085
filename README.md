@@ -1,7 +1,5 @@
 # ASTEROIDS 2085 (WIP) [![Asteroid Builds](https://github.com/XeCrash/Asteroids_2085/actions/workflows/asteroids-ci-builds.yml/badge.svg)](https://github.com/XeCrash/Asteroids_2085/actions/workflows/asteroids-ci-builds.yml)
 
-Built with pygame 2.6.1, SDL 2.28.4, Python 3.12.3, &amp; Some Love ™️💯
-
 ## Requirements
 
 - Install [**Python Language**](https://python.org/downloads/) >= 3.10
