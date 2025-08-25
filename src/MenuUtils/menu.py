@@ -51,14 +51,20 @@ class Menu:
         self.transitioning = False
         self.title_animation_time = 0
         self.title_fade_alpha = 0  # For title fade-in effect
+        # Cache for menu option surfaces
+        self._option_cache = {}
 
         # Load background images for different game states
         self.menu_background = self.load_background("starry_sky_sparkle_bg.png")
         self.game_background = self.load_background("starry_sky_basic_bg.png")
+        # Reusable transition surface (avoid creating per-frame)
+        self.transition_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT)).convert()
+        self.transition_surface.fill(COLOR_BLACK)
         # self.game_over_background = self.load_background("game_over_bg.png")
 
         # Initialize music
-        pygame.mixer.init()
+        if not pygame.mixer.get_init():
+            pygame.mixer.init()
         self.menu_music = None
         self.game_music = None
 
@@ -103,77 +109,57 @@ class Menu:
         if self.title_fade_alpha < 255:
             self.title_fade_alpha += MENU_TITLE_FADE_SPEED  # Gradually increase opacity
 
-        # Draw animated title with unique design
+        # Draw animated title with unique design (pre-rendered glyphs, animated positions only)
         title_text = MENU_TITLE_TEXT
         title_center_x = SCREEN_WIDTH / 2
         title_center_y = SCREEN_HEIGHT / 4
 
-        # Create a unique, animated title
-        # First calculate the total width more accurately
-        total_width = 0
-        # char_surfaces = []
-        char_widths = []
-        char_color = [255, 255, 0]  # Initial color
+        # Lazily build cached glyph surfaces once
+        if not hasattr(self, "_title_cache"):
+            char_surfaces = []
+            char_widths = []
+            for i, char in enumerate(title_text):
+                char_color_r, char_color_g, char_color_b = (255, 255 - i * 15, i * 25)
+                if char_color_b <= 255:
+                    char_color = (char_color_r, char_color_g, char_color_b)
+                else:
+                    char_color = (char_color_r, char_color_g, 255)
+                surf = self.font_large.render(char, True, char_color).convert_alpha()
+                shadow = self.font_large.render(char, True, (50, 50, 50)).convert_alpha()
+                char_surfaces.append((surf, shadow))
+                char_widths.append(surf.get_width())
+            char_gap = sum(char_widths) / len(char_widths) * 0.1 if char_widths else 0
+            total_width = sum(char_widths) + char_gap * (len(title_text) - 1)
+            self._title_cache = {
+                "char_surfaces": char_surfaces,
+                "char_widths": char_widths,
+                "char_gap": char_gap,
+                "total_width": total_width,
+            }
 
-        for char in title_text:
-            char_surface = self.font_large.render(
-                char, True, (255, 255, 255)
-            )  # Temporary for width calculation
-            char_width = char_surface.get_width()
-            char_widths.append(char_width)
-            total_width += char_width
-
-        # Add a small gap between characters (10% of average character width)
-        char_gap = sum(char_widths) / len(char_widths) * 0.1
-        total_width += char_gap * (len(title_text) - 1)
-
-        # Now render and position each character
-        current_x = title_center_x - total_width / 2
-
-        for i, char in enumerate(title_text):
-            # Calculate position with wave effect
+        cache = self._title_cache
+        current_x = title_center_x - cache["total_width"] / 2
+        for i, (char_surface, shadow) in enumerate(cache["char_surfaces"]):
             offset_y = math.sin(self.title_animation_time + i * 0.3) * 10
-
-            # Color gradient
-            char_color_r, char_color_g, char_color_b = (255, 255 - i * 15, i * 25)
-            char_color = (char_color_r, char_color_g, char_color_b)
-            # Render each character separately
-            if char_color_b <= 255:
-                # While blue is not maxed out
-                # print(char_color) # TODO: Remove (Debugging)
-                char_surface = self.font_large.render(char, True, char_color)
-            else:
-                # Once blue is maxed out
-                char_surface = self.font_large.render(
-                    char, True, (char_color_r, char_color_g, 255)
-                )  # White for the last few characters
-
-            # Position each character
             pos_x = current_x
             pos_y = title_center_y + offset_y
-
-            # Add shadow effect
-            shadow = self.font_large.render(char, True, (50, 50, 50))
-
-            # Apply fade-in effect to both character and shadow
             char_surface.set_alpha(self.title_fade_alpha)
             shadow.set_alpha(self.title_fade_alpha)
-
-            # Draw the shadow and character
             screen.blit(shadow, (pos_x + 3, pos_y + 3))
             screen.blit(char_surface, (pos_x, pos_y))
-
-            # Move to the next character position
-            current_x += char_widths[i] + char_gap
+            current_x += cache["char_widths"][i] + cache["char_gap"]
 
         # Draw menu options
         for i, option in enumerate(self.options):
             # Use blue color for menu text, but keep selection indicators white
             if i == self.selected_option:
                 # Render the option text in blue
-                option_text = self.font_small.render(
-                    option, True, MENU_OPTION_SELECTED_COLOR
-                )  # TODO: add CONST MENU_OPTION_COLOR
+                key_selected = (option, True)
+                if key_selected not in self._option_cache:
+                    self._option_cache[key_selected] = self.font_small.render(
+                        option, True, MENU_OPTION_SELECTED_COLOR
+                    ).convert_alpha()
+                option_text = self._option_cache[key_selected]
 
                 # Calculate positions for the text
                 option_rect = option_text.get_rect(
@@ -184,8 +170,14 @@ class Menu:
                 )
 
                 # Render the left and right arrows separately in white
-                left_arrow = self.font_small.render(">", True, MENU_OPTION_ARROW_COLOR)
-                right_arrow = self.font_small.render("<", True, MENU_OPTION_ARROW_COLOR)
+                # Cache arrows once
+                if not hasattr(self, "_arrow_cache"):
+                    self._arrow_cache = {
+                        ">": self.font_small.render(">", True, MENU_OPTION_ARROW_COLOR).convert_alpha(),
+                        "<": self.font_small.render("<", True, MENU_OPTION_ARROW_COLOR).convert_alpha(),
+                    }
+                left_arrow = self._arrow_cache[">"]
+                right_arrow = self._arrow_cache["<"]
 
                 # Position arrows with proper spacing based on text width
                 left_arrow_pos = (
@@ -200,7 +192,12 @@ class Menu:
                 screen.blit(right_arrow, right_arrow_pos)
             else:
                 # Non-selected options are just red
-                text = self.font_small.render(option, True, MENU_OPTION_COLOR)
+                key_normal = (option, False)
+                if key_normal not in self._option_cache:
+                    self._option_cache[key_normal] = self.font_small.render(
+                        option, True, MENU_OPTION_COLOR
+                    ).convert_alpha()
+                text = self._option_cache[key_normal]
                 rect = text.get_rect(
                     center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + i * 50)
                 )
@@ -208,10 +205,8 @@ class Menu:
 
         # Draw transition overlay if needed
         if self.transitioning:
-            transition_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-            transition_surface.fill(COLOR_BLACK)
-            transition_surface.set_alpha(self.transition_alpha)
-            screen.blit(transition_surface, (0, 0))
+            self.transition_surface.set_alpha(self.transition_alpha)
+            screen.blit(self.transition_surface, (0, 0))
 
     def handle_input(self):
         """Processes keyboard input for menu navigation and selection.
@@ -312,14 +307,16 @@ class Menu:
         try:
             # Try loading from ./src/Assets/Images/ first
             path = f"./src/Assets/Images/{filename}"
-            background = pygame.image.load(path)
-            return pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            background = pygame.image.load(path).convert()
+            scaled = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            return scaled.convert()
         except FileNotFoundError:
             try:
                 # Try alternative path
                 path = f"./Assets/Images/{filename}"
-                background = pygame.image.load(path)
-                return pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                background = pygame.image.load(path).convert()
+                scaled = pygame.transform.scale(background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+                return scaled.convert()
             except FileNotFoundError:
                 print(f"Background image {filename} not found!")
                 # Create a fallback black background

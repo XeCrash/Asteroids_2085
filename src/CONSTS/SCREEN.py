@@ -18,7 +18,11 @@ SCREEN_FPS = 165
 # Pygame display flags for window behavior
 # SCALED: Maintains aspect ratio when resizing
 # RESIZABLE: Allows window resizing
-SCREEN_FLAGS = pygame.SCALED | pygame.RESIZABLE
+# DOUBLEBUF: Enables double buffering for smoother rendering
+SCREEN_FLAGS = pygame.SCALED | pygame.RESIZABLE | pygame.DOUBLEBUF
+
+# Enable vertical sync to reduce tearing and cap flip rate
+SCREEN_VSYNC = 1
 
 # Window title bar text
 SCREEN_CAPTION = "Asteroids! | Programmed By (Avery R.)"
