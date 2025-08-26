@@ -6,6 +6,9 @@ from CONSTS.FONTS import FONT_DAYDREAM, FONT_DAYDREAM_PATH2
 class HUD:
     # Class variable for the font
     font_default = None
+    kills_label_surface = None
+    last_kill_count = None
+    kill_num_surface = None
 
     @staticmethod
     def init_font():
@@ -20,6 +23,10 @@ class HUD:
             HUD.font_default = pygame.font.Font(
                 FONT_DAYDREAM_PATH2, 16
             )
+        # Pre-render static label and init counters
+        HUD.kills_label_surface = HUD.font_default.render("Kills:", True, COLOR_YELLOW)
+        HUD.kill_num_surface = HUD.font_default.render("0", True, COLOR_PURPLE)
+        HUD.last_kill_count = 0
 
     @staticmethod
     def draw(screen, kill_count: int):
@@ -29,10 +36,13 @@ class HUD:
             screen: pygame.Surface - The main display surface
             kill_count: int - The current number of kills by the player
         """
-        # Create the kill count text surface
-        kill_text = HUD.font_default.render("Kills:", True, COLOR_YELLOW)
+        # Use cached label; update number surface only when needed
+        kill_text = HUD.kills_label_surface
         kill_txt_rect = kill_text.get_rect()
-        kill_num = HUD.font_default.render(f"{kill_count}", True, COLOR_PURPLE)
+        if kill_count != HUD.last_kill_count or HUD.kill_num_surface is None:
+            HUD.kill_num_surface = HUD.font_default.render(f"{kill_count}", True, COLOR_PURPLE)
+            HUD.last_kill_count = kill_count
+        kill_num = HUD.kill_num_surface
         kill_num_rect = kill_num.get_rect()
 
         # Position the text in the top-left corner with some padding

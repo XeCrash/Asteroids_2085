@@ -274,21 +274,26 @@ def main():
         None
     """
     logging.info("main() method started.")
+    # Pre-initialize mixer for lower latency and consistent audio
+    pygame.mixer.pre_init(44100, -16, 2, 512)
     pygame.init()
+    # Limit event queue to only what we actually use
+    pygame.event.set_allowed([pygame.QUIT, pygame.KEYDOWN])
     HUD.init_font()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_FLAGS)
+    from CONSTS.SCREEN import SCREEN_VSYNC
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_FLAGS, vsync=SCREEN_VSYNC)
     clock = pygame.time.Clock()
     pygame.display.set_caption(SCREEN_CAPTION)
 
     # Load program icon and set it
     try:
         logging.info("Loading 'Icon.png'...")
-        icon = pygame.image.load("./Assets/Images/Icon.png")
+        icon = pygame.image.load("./Assets/Images/Icon.png").convert_alpha()
     except FileNotFoundError:
         logging.error(
             "Failed to find 'Icon.png' with path './Assets/Images/Icon.png', retrying icon loading with path './src/Assets/Images/Icon.png'!"  # noqa: E501
         )
-        retry_icon = pygame.image.load("./src/Assets/Images/Icon.png")
+        retry_icon = pygame.image.load("./src/Assets/Images/Icon.png").convert_alpha()
 
         if retry_icon is None:
             logging.critical("Failed to load 'Icon.png'!")
